@@ -24,4 +24,19 @@ class GastoViewModel extends ChangeNotifier {
   double get saldo {
     return ingreso - totalGastos;
   }
+
+  Map<String, double> get gastosPorCategoria {
+    Map<String, double> data = {};
+
+    for (var gasto in _gastos) {
+      if (data.containsKey(gasto.categoria)) {
+        data[gasto.categoria] =
+            data[gasto.categoria]! + gasto.cantidad;
+      } else {
+        data[gasto.categoria] = gasto.cantidad;
+      }
+    }
+
+    return data;
+  }
 }
