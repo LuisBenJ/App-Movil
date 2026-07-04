@@ -3,13 +3,27 @@ import 'package:provider/provider.dart';
 import '../viewmodel/gasto_viewmodel.dart';
 
 class DesgloseView extends StatelessWidget {
+
+  String _formatFecha(DateTime fecha) {
+    final dia = fecha.day.toString().padLeft(2, '0');
+    final mes = fecha.month.toString().padLeft(2, '0');
+    final anio = fecha.year.toString();
+    final hora = fecha.hour.toString().padLeft(2, '0');
+    final minuto = fecha.minute.toString().padLeft(2, '0');
+    return "$dia/$mes/$anio $hora:$minuto";
+  }
+
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<GastoViewModel>(context);
-    final data = vm.gastosPorCategoria;
+    final gastos = vm.gastos;
 
     double total = vm.totalGastos;
     double restante = vm.saldo;
+
+    // Mostrar los gastos más recientes primero
+    final gastosOrdenados = List.of(gastos)
+      ..sort((a, b) => b.fecha.compareTo(a.fecha));
 
     return Scaffold(
       appBar: AppBar(title: Text("Desglose de gastos")),
@@ -39,14 +53,14 @@ class DesgloseView extends StatelessWidget {
 
           Divider(),
 
-          // 📊 LISTA DE CATEGORÍAS
+          // 📋 LISTA DE GASTOS
           Expanded(
-            child: data.isEmpty
+            child: gastosOrdenados.isEmpty
                 ? Center(child: Text("No hay gastos registrados"))
-                : ListView(
-              children: data.entries.map((entry) {
-                double porcentaje =
-                total == 0 ? 0 : entry.value / total;
+                : ListView.builder(
+              itemCount: gastosOrdenados.length,
+              itemBuilder: (context, index) {
+                final gasto = gastosOrdenados[index];
 
                 return Card(
                   margin: EdgeInsets.symmetric(
@@ -58,41 +72,39 @@ class DesgloseView extends StatelessWidget {
                       CrossAxisAlignment.start,
                       children: [
 
-                        // 🧾 NOMBRE + MONTO
+                        // 🧾 DESCRIPCIÓN + MONTO
                         Row(
                           mainAxisAlignment:
                           MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              entry.key,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: Text(
+                                gasto.descripcion,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                             Text(
-                              "\$${entry.value.toStringAsFixed(2)}",
+                              "\$${gasto.cantidad.toStringAsFixed(2)}",
                             ),
                           ],
                         ),
 
                         SizedBox(height: 5),
 
-                        // 📊 PORCENTAJE
+                        // 📅 FECHA
                         Text(
-                          "${(porcentaje * 100).toStringAsFixed(1)}%",
-                          style: TextStyle(fontSize: 12),
-                        ),
-
-                        SizedBox(height: 5),
-
-                        // 📈 BARRA VISUAL
-                        LinearProgressIndicator(
-                          value: porcentaje,
+                          _formatFecha(gasto.fecha),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 );
-              }).toList(),
+              },
             ),
           ),
 

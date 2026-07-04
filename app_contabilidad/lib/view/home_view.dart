@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodel/gasto_viewmodel.dart';
-import '../model/gasto.dart';
 import 'agregar_gasto_view.dart';
-import 'agregar_ingreso_view.dart';
 import 'desglose_view.dart';
+import 'estadisticas_view.dart';
+import 'configuracion_view.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -13,6 +13,56 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text("Contabilidad")),
+
+      // 📂 MENÚ LATERAL DERECHO
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "Menú",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text("Estadísticas"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EstadisticasView(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Configuración"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ConfiguracionView(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
 
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -35,24 +85,6 @@ class HomeView extends StatelessWidget {
 
           SizedBox(height: 20),
 
-
-
-          SizedBox(height: 20),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AgregarIngresoView(),
-                ),
-              );
-            },
-            child: Text("Agregar ingreso"),
-          ),
-
-          SizedBox(height: 10),
-
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -67,7 +99,7 @@ class HomeView extends StatelessWidget {
         ],
       ),
 
-      // 👇 AQUÍ ESTÁ EL BOTÓN
+      // 👇 BOTÓN AGREGAR GASTO
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

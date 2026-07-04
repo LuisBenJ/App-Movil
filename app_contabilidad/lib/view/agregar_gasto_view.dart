@@ -11,20 +11,7 @@ class AgregarGastoView extends StatefulWidget {
 
 class _AgregarGastoViewState extends State<AgregarGastoView> {
   final TextEditingController cantidadController = TextEditingController();
-
-  String categoriaSeleccionada = "Alimentación";
-
-  final List<String> categorias = [
-    "Alimentación",
-    "Transporte",
-    "Hogar",
-    "Entretenimiento",
-    "Educación",
-    "Compras personales",
-    "Salud",
-    "Ahorro",
-    "Otros"
-  ];
+  final TextEditingController descripcionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,22 +37,11 @@ class _AgregarGastoViewState extends State<AgregarGastoView> {
 
             SizedBox(height: 20),
 
-            // 📂 DROPDOWN CATEGORÍAS
-            DropdownButtonFormField<String>(
-              value: categoriaSeleccionada,
-              items: categorias.map((cat) {
-                return DropdownMenuItem(
-                  value: cat,
-                  child: Text(cat),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  categoriaSeleccionada = value!;
-                });
-              },
+            // 📝 INPUT DESCRIPCIÓN
+            TextField(
+              controller: descripcionController,
               decoration: InputDecoration(
-                labelText: "Categoría",
+                labelText: "Descripción",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -76,12 +52,13 @@ class _AgregarGastoViewState extends State<AgregarGastoView> {
             ElevatedButton(
               onPressed: () {
                 final cantidad = double.tryParse(cantidadController.text);
+                final descripcion = descripcionController.text.trim();
 
-                if (cantidad == null) return;
+                if (cantidad == null || descripcion.isEmpty) return;
 
                 vm.agregarGasto(
                   Gasto(
-                    categoria: categoriaSeleccionada,
+                    descripcion: descripcion,
                     cantidad: cantidad,
                     fecha: DateTime.now(),
                   ),

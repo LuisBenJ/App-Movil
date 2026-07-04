@@ -1,10 +1,10 @@
 class Gasto {
-  String categoria;
+  String descripcion;
   double cantidad;
   DateTime fecha;
 
   Gasto({
-    required this.categoria,
+    required this.descripcion,
     required this.cantidad,
     required this.fecha,
   });
