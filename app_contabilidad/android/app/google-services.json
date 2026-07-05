@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "225093645546",
+    "project_id": "app-conta-569ee",
+    "storage_bucket": "app-conta-569ee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225093645546:android:4dab8e4abc8317c96c5393",
+        "android_client_info": {
+          "package_name": "com.ben.appConta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCckaWBVRiBKAtdFTIcsLB93IYHoy1nLS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
